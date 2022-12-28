@@ -3,16 +3,16 @@ package com.curso.ecommerce.controller;
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.service.ProductoService;
+import com.curso.ecommerce.service.UploadFileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -21,6 +21,9 @@ public class ProductoController {
 
     @Autowired
     private ProductoService sProducto;
+
+    @Autowired
+    private UploadFileService upload;
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
     @GetMapping("")
     public String show(Model model){
@@ -34,10 +37,25 @@ public class ProductoController {
     }
 
     @PostMapping("/save")
-    public String save(Producto producto){
+    public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
         LOGGER.info("ESTE ES EL OBJETO PRODUCTO {}",producto);
         Usuario u = new Usuario(1, "", "", "", "", "", "", "");
         producto.setUsuario(u);
+        //imagen
+        if(producto.getId() == null){ //Cuando se crea un producto
+            String nombreImagen = upload.saveImage(file);
+            producto.setImagen(nombreImagen);
+        }
+        else{
+            if(file.isEmpty()){ //Editamos el producto pero no cambiamos la imagen
+                Producto p = new Producto();
+                p=sProducto.get(producto.getId()).get();
+                producto.setImagen(p.getImagen());
+            }else{
+                String nombreImagen = upload.saveImage(file);
+                producto.setImagen(nombreImagen);
+            }
+        }
         sProducto.save(producto);
         return "redirect:/productos";
     }
