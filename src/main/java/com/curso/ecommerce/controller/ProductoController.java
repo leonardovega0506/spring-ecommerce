@@ -55,12 +55,13 @@ public class ProductoController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable(value = "id") Integer id, Model model){
-        Producto producto = new Producto();
-        Optional<Producto> optionalProducto = sProducto.get(id);
-        producto  = optionalProducto.get();
+        Producto producto= new Producto();
+        Optional<Producto> optionalProducto=sProducto.get(id);
+        producto= optionalProducto.get();
 
-        LOGGER.info("Producto buscado {}",producto);
-        model.addAttribute("producto",producto);
+        LOGGER.info("Producto buscado: {}",producto);
+        model.addAttribute("producto", producto);
+
         return "productos/edit";
     }
 
