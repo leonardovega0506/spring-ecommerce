@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -152,6 +154,14 @@ public class HomeController {
         orden = new Orden();
         detalles.clear();
         return "redirect:/";
+    }
+
+    @PostMapping("/search")
+    public String searchProduct(@RequestParam String nombre, Model model){
+        log.info("Nombre del producto {}",nombre);
+        List<Producto> productos = sProducto.finAll().stream().filter(p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
+        model.addAttribute("productos",productos);
+        return "usuario/home";
     }
 
 }
