@@ -22,7 +22,8 @@ public class OrdenServiceImpl implements OrdenService{
     public List<Orden> findAll() {
         return ordenRepository.findAll();
     }
-    public String generarNumeroOrden(){
+    @Override
+    public String generateNumeroOrden(){
         int numero = 0;
         String numeroConcatenado = "";
         List<Orden> ordenes = findAll();
