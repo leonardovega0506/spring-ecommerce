@@ -3,7 +3,9 @@ package com.curso.ecommerce.controller;
 import com.curso.ecommerce.model.DetalleOrden;
 import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Producto;
+import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.service.ProductoService;
+import com.curso.ecommerce.service.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class HomeController {
     private final Logger log = LoggerFactory.getLogger(HomeController.class);
     @Autowired
     private ProductoService sProducto;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     //Para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
@@ -108,7 +113,11 @@ public class HomeController {
     }
 
     @GetMapping("/order")
-    public String order(){
+    public String order(Model model){
+        Usuario usuario = usuarioService.findById(1).get();
+        model.addAttribute("cart", detalles);
+        model.addAttribute("orden",orden);
+        model.addAttribute("usuario",usuario);
         return "usuario/resumenorden";
     }
 
