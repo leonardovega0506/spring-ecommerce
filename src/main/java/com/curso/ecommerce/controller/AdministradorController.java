@@ -5,7 +5,7 @@ import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.service.OrdenService;
 import com.curso.ecommerce.service.ProductoService;
 import com.curso.ecommerce.service.UsuarioService;
-import jakarta.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
