@@ -38,7 +38,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             log.info("ESTO ES EL ID DEL USUARIO: {}",oUsuario.get().getIdUsuario());
             session.setAttribute("idUsuario",oUsuario.get().getIdUsuario());
             Usuario usuario = oUsuario.get();
-            return User.builder().username(usuario.getNombre()).password(passwordEncoder.encode(usuario.getPassword())).roles(usuario.getTipo()).build();
+            return User.builder().username(usuario.getNombre()).password(usuario.getPassword()).roles(usuario.getTipo()).build();
         }else {
            throw new UsernameNotFoundException("Usuario no encontrado");
         }
